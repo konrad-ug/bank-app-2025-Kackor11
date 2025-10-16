@@ -16,3 +16,7 @@ class TestAccount:
     def test_pesel_too_long(self):
         account = Account("Jane", "Doe", "1234556660543458")
         assert account.pesel == "Invalid"
+        
+    def test_pesel_not_given(self):
+        account = Account("Jane", "Doe", None)
+        assert account.pesel == "Invalid"
