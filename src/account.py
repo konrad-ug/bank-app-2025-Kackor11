@@ -1,4 +1,17 @@
 class Account:
+    def __init__(self):
+        self.balance = 0.0
+        
+    def transfer_in(self, amount):
+        if isinstance(amount, float):
+            self.balance += amount 
+                       
+    def transfer_out(self, amount):
+        if isinstance(amount, float) and self.balance >= amount:
+            self.balance -= amount
+
+
+class Customer_Account(Account):
     def __init__(self, first_name, last_name, pesel, promo_code):
         self.first_name = first_name
         self.last_name = last_name
@@ -29,4 +42,10 @@ class Account:
         if 1 <= month <= 12:
             return year > 60
         return True
+    
+class Firm_Account(Account):
+    def __init__(self, company_name, nip):
+        self.company_name = company_name
+        self.nip = nip if len(nip) == 10 else "INVALID"
+        self.balance = 0.0
         
