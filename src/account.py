@@ -9,6 +9,15 @@ class Account:
     def transfer_out(self, amount):
         if isinstance(amount, float) and self.balance >= amount:
             self.balance -= amount
+            
+    def express_transfer(self, amount):
+        if isinstance(self, Customer_Account):
+            fee = 1.0
+        else:
+            fee = 5.0
+        
+        new_balance = self.balance - amount - fee
+        self.balance = new_balance if (self.balance - amount) >= 0 else self.balance
 
 
 class Customer_Account(Account):

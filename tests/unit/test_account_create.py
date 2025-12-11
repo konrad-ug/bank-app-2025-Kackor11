@@ -10,8 +10,27 @@ class Test_Firm_Account:
         account = Firm_Account("Valve", "123456789")
         assert account.company_name == "Valve"
         assert account.nip == "INVALID"
+
         
 class Test_Firm_Transfer:
+    def test_firm_account_express_transfer_enough_money(self):
+        account = Firm_Account("Valve", "1234567890")
+        account.balance += 200.0
+        account.express_transfer(190.0)
+        assert account.balance == 5.0
+        
+    def test_firm_account_express_transfer_not_enough_money(self):
+        account = Firm_Account("Valve", "1234567890")
+        account.balance += 200.0
+        account.express_transfer(210.0)
+        assert account.balance == 200.0  
+    
+    def test_firm_account_express_transfer_equal_money(self):
+        account = Firm_Account("Valve", "1234567890")
+        account.balance += 200.0
+        account.express_transfer(200.0)
+        assert account.balance == -5.0
+
     def test_transfer_out_Firm_Account_went_through_enough_money(self):
         account = Firm_Account("Valve", "1234567890")
         account.balance += 200.0
@@ -88,6 +107,24 @@ class Test_Customer_Account:
 
         
 class Test_Customer_Transfer:
+    def test_customer_account_express_transfer_enough_money(self):
+        account = Customer_Account("Jane", "Doe", "01251587623", None)
+        account.balance += 200.0
+        account.express_transfer(190.0)
+        assert account.balance == 9.0
+        
+    def test_customer_account_express_transfer_not_enough_money(self):
+        account = Customer_Account("Jane", "Doe", "01251587623", None)
+        account.balance += 200.0
+        account.express_transfer(210.0)
+        assert account.balance == 200.0  
+    
+    def test_customer_account_express_transfer_equal_money(self):
+        account = Customer_Account("Jane", "Doe", "01251587623", None)
+        account.balance += 200.0
+        account.express_transfer(200.0)
+        assert account.balance == -1.0
+    
     def test_transfer_Customer_Account_went_through_enough_money(self):
         account = Customer_Account("Jane", "Doe", "01251587623", "PROM_XYZ")
         account.balance += 200.0
