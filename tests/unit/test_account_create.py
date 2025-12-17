@@ -1,4 +1,9 @@
-from src.account import Customer_Account, Firm_Account
+from src.account import Customer_Account, Firm_Account, Account
+
+class Test_Account:
+    def test_base_account_if_valid(self):
+        account = Account()
+        assert account.balance == 0.0
 
 class Test_Firm_Account:
     def test_firm_account_creation_with_valid_nip(self):
