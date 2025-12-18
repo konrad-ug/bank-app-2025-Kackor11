@@ -1,6 +1,13 @@
+import pytest
 from src.firm_account import Firm_Account
+
+@pytest.fixture
+def account():
+    return Firm_Account("Valve", "1234567890")
+
         
-class Test_Firm_Transfer:
+        
+class Test_Firm_express_Transfer:
     def test_firm_account_express_transfer_enough_money(self):
         account = Firm_Account("Valve", "1234567890")
         account.balance += 200.00
@@ -19,6 +26,18 @@ class Test_Firm_Transfer:
         account.express_transfer(200.00)
         assert account.balance == -5.00
 
+class Test_Firm_Transfer_In:
+    def test_Firm_Account_transfer_in(self):
+        account = Firm_Account("Valve", "1234567890")
+        account.transfer_in(100.00)
+        assert account.balance == 100.00
+        
+    def test_Firm_Account_transfer_in_invalid_type(self):
+        account = Firm_Account("Valve", "1234567890")
+        account.transfer_in("abc")
+        assert account.balance == 0.00
+
+class Test_Firm_Transfer_Out:
     def test_transfer_out_Firm_Account_went_through_enough_money(self):
         account = Firm_Account("Valve", "1234567890")
         account.balance += 200.00
@@ -30,14 +49,3 @@ class Test_Firm_Transfer:
         account.balance += 200.00
         account.transfer_out(260.00)
         assert account.balance == 200.00
-        
-    def test_Firm_Account_transfer_in(self):
-        account = Firm_Account("Valve", "1234567890")
-        account.transfer_in(100.00)
-        assert account.balance == 100.00
-        
-    def test_Firm_Account_transfer_in_invalid_type(self):
-        account = Firm_Account("Valve", "1234567890")
-        account.transfer_in("abc")
-        assert account.balance == 0.00
-        
