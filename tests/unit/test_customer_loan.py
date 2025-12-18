@@ -1,34 +1,26 @@
+import pytest
 from src.customer_account import Customer_Account
 
-class Test_Customer_For_Loan:
-    def test_customer_loan_history_not_long_enough(self):
-        account = Customer_Account("Jane", "Doe", "01251587623", None)
-        account.transaction_history = [100.00, 200.00]
-        account.balance = 300.00
-        loan = account.submit_for_loan(500)
-        assert loan == False
-        assert account.balance == 300.00
+@pytest.fixture
+def account():
+    return Customer_Account("Jane", "Doe", "01251587623", None)
 
-    def test_customer_loan_last_three_transactions_are_in(self):
-        account = Customer_Account("Jane", "Doe", "01251587623", None)
-        account.transaction_history = [-25, 100.00, 200.00, 400.00, 100.00]
-        account.balance = 675.00
-        loan = account.submit_for_loan(500)
-        assert loan == True
-        assert account.balance == 1175.00
+class Test_Customer_For_Loan:
     
-    def test_customer_loan_last_five_transactions_greater_then_loan_amount(self):
-        account = Customer_Account("Jane", "Doe", "01251587623", None)
-        account.transaction_history = [-25, 100.00, 200.00, 400.00, -100]
-        account.balance = 575.00
-        loan = account.submit_for_loan(500)
-        assert loan == True
-        assert account.balance == 1075.00
+    @pytest.mark.parametrize("history, current_balance, amount, expected_loan_result, expected_final_balance", [
+        # test_customer_loan_history_not_long_enough
+        ([100.00, 200.00], 300.00, 500.00, False, 300.00),
+        # test_customer_loan_last_three_transactions_are_in
+        ([-25, 100.00, 200.00, 400.00, 100.00], 675.00, 500.00, True, 1175.00),
+        # test_customer_loan_last_five_transactions_greater_then_loan_amount
+        ([-25, 100.00, 200.00, 400.00, -100], 575.00, 500.00, True, 1075.00),
+        # test_customer_loan_last_five_transactions_lower_then_loan_amount
+        ([-25, 100.00, 200.00, 400.00, -400], 575.00, 500.00, False, 575.00)
+    ])
     
-    def test_customer_loan_last_five_transactions_lower_then_loan_amount(self):
-        account = Customer_Account("Jane", "Doe", "01251587623", None)
-        account.transaction_history = [-25, 100.00, 200.00, 400.00, -400]
-        account.balance = 575.00
-        loan = account.submit_for_loan(500)
-        assert loan == False
-        assert account.balance == 575.00
+    def test_submit_for_loan(self, account, history, current_balance, amount, expected_loan_result, expected_final_balance):
+        account.transaction_history = history
+        account.balance = current_balance
+        result = account.submit_for_loan(amount)
+        assert result == expected_loan_result
+        assert account.balance == expected_final_balance
