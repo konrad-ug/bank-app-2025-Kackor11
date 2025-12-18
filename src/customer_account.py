@@ -32,3 +32,18 @@ class Customer_Account(Account):
         if 1 <= month <= 12:
             return year > 60
         return True
+
+    def submit_for_loan(self, amount):
+        if len(self.transaction_history) < 5:
+            return False
+        
+        last_three_positive = all(t > 0 for t in self.transaction_history[-3:])
+        
+        sum_last_five_greater_then_amount = sum(self.transaction_history[-5:]) > amount
+        
+        if sum_last_five_greater_then_amount or last_three_positive:
+            self.balance += amount
+            return True
+        
+        return False
+            
