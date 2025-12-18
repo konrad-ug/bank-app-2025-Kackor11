@@ -1,4 +1,9 @@
+import pytest
 from src.firm_account import Firm_Account
+
+@pytest.fixture
+def account():
+    return Firm_Account("Valve", "1234567890")
 
 class Test_Firm_Account:
     def test_firm_account_creation_with_valid_nip(self):

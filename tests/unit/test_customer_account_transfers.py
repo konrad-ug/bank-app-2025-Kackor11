@@ -23,18 +23,18 @@ class Test_Customer_Transfer_In:
         ["abc", 0.00]
     ])
     
-    def test_customer_express_transfer(self, account, transfer_value, end_balance):
+    def test_customer_in_transfer(self, account, transfer_value, end_balance):
         account.transfer_in(transfer_value)
         assert account.balance == end_balance
     
 class Test_Customer_Transfer_Out:
     
     @pytest.mark.parametrize("start_balance, transfer_value, end_balance", [
-        [200.00, 150.00, 50.00],
+       [200.00, 150.00, 50.00],
         [200.00, 260.00, 200.00]
     ])
     
-    def test_customer_express_transfer(self, account, start_balance, transfer_value, end_balance):
+    def test_customer_out_transfer(self, account, start_balance, transfer_value, end_balance):
         account.balance = start_balance
         account.transfer_out(transfer_value)
-        assert account.balance == end_balance
+        assert account.balance == end_balance 
