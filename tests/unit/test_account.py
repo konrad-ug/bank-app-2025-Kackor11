@@ -6,8 +6,8 @@ class Test_Account:
     def test_base_account_if_valid(self):
         account = Account()
         assert account.balance == 0.00
-        
-class Test_Account_transaction_history:
+
+class Test_Customer_Account_transaction_history:
     # CUSTOMER ACCOUNT TESTS
     def test_customer_account_history_valid_express_transfer(self):
         account = Customer_Account("Jane", "Doe", "01251587623", None)
@@ -37,6 +37,7 @@ class Test_Account_transaction_history:
         account.express_transfer(50.00)
         assert account.transaction_history == [200.00, -150.00, -50.00, -1.00]
     
+class Test_Firm_Account_transaction_history:
     # FIRM ACCOUNT TESTS
     def test_firm_account_history_valid_express_transfer(self):
         account = Firm_Account("Valve", "1234567890")
