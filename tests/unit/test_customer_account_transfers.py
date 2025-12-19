@@ -3,45 +3,38 @@ from src.customer_account import Customer_Account
 
 @pytest.fixture
 def account():
-    pass
+    return Customer_Account("Jane", "Doe", "01251587623", None)
 
-class Test_Customer_Transfer:
-    def test_customer_account_express_transfer_enough_money(self):
-        account = Customer_Account("Jane", "Doe", "01251587623", None)
-        account.balance += 200.00
-        account.express_transfer(190.00)
-        assert account.balance == 9.00
-        
-    def test_customer_account_express_transfer_not_enough_money(self):
-        account = Customer_Account("Jane", "Doe", "01251587623", None)
-        account.balance += 200.00
-        account.express_transfer(210.00)
-        assert account.balance == 200.00
+class Test_Customer_express_Transfer:
+    @pytest.mark.parametrize("start_balance, transfer_value, end_balance", [
+        [200.00, 190.00, 9.00],
+        [200.00, 210.00, 200.00],
+        [200.00, 200.00, -1.00]
+    ])
     
-    def test_customer_account_express_transfer_equal_money(self):
-        account = Customer_Account("Jane", "Doe", "01251587623", None)
-        account.balance += 200.00
-        account.express_transfer(200.00)
-        assert account.balance == -1.00
+    def test_customer_express_transfer(self, account, start_balance, transfer_value, end_balance):
+        account.balance = start_balance
+        account.express_transfer(transfer_value)
+        assert account.balance == end_balance
     
-    def test_transfer_Customer_Account_went_through_enough_money(self):
-        account = Customer_Account("Jane", "Doe", "01251587623", None)
-        account.balance += 200.00
-        account.transfer_out(150.00)
-        assert account.balance == 100.00
-        
-    def test_transfer_Customer_Account_did_not_go_through_not_enough_money(self):
-        account = Customer_Account("Jane", "Doe", "01251587623", None)
-        account.balance += 200.00
-        account.transfer_out(260.00)
-        assert account.balance == 250.00
-        
-    def test_Customer_Account_transfer_in(self):
-        account = Customer_Account("Jane", "Doe", "01251587623", None)
-        account.transfer_in(100.00)
-        assert account.balance == 150.00
-        
-    def test_Customer_Account_transfer_in_invalid_type(self):
-        account = Customer_Account("Jane", "Doe", "01251587623", None)
-        account.transfer_in("abc")
-        assert account.balance == 50.00
+class Test_Customer_Transfer_In:
+    @pytest.mark.parametrize("transfer_value, end_balance", [
+        [100.00, 100.00],
+        ["abc", 0.00]
+    ])
+    
+    def test_customer_in_transfer(self, account, transfer_value, end_balance):
+        account.transfer_in(transfer_value)
+        assert account.balance == end_balance
+    
+class Test_Customer_Transfer_Out:
+    
+    @pytest.mark.parametrize("start_balance, transfer_value, end_balance", [
+       [200.00, 150.00, 50.00],
+        [200.00, 260.00, 200.00]
+    ])
+    
+    def test_customer_out_transfer(self, account, start_balance, transfer_value, end_balance):
+        account.balance = start_balance
+        account.transfer_out(transfer_value)
+        assert account.balance == end_balance 
