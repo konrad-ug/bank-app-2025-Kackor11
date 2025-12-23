@@ -6,3 +6,13 @@ class Firm_Account(Account):
         self.nip = nip if len(nip) == 10 else "INVALID"
         self.balance = 0.00
         self.transaction_history = []
+        
+    def take_loan(self, amount):
+        if self.balance > amount * 2 and -1775 in self.transaction_history:
+            self.balance += amount
+            return True
+        return False
+        
+
+        
+        
