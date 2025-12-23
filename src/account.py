@@ -10,12 +10,12 @@ class Account:
     def transfer_in(self, amount):
         if isinstance(amount, float):
             self.balance += amount
-        self.update_transfer_history(amount, 0)
+            self.update_transfer_history(amount, 0)
                        
     def transfer_out(self, amount):
         if isinstance(amount, float) and self.balance >= amount:
             self.balance -= amount
-        self.update_transfer_history(-amount, 0)
+            self.update_transfer_history(-amount, 0)
             
     def express_transfer(self, amount):
         from src.customer_account import Customer_Account
