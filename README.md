@@ -10,5 +10,9 @@ group: II
 
 ## How to start the app
 
+python -m flask --app app/api.py run
 
 ## How to execute tests
+
+python3 -m pytest app/api_tests/account_crud.py
+python3 -m coverage run --source=src -m pytest 

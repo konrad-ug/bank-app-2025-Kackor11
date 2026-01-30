@@ -46,3 +46,21 @@ class TestAPIAccount:
         
         response = requests.get(f"{BASE_URL}/{pesel}")
         assert response.status_code == 404
+        
+    def test_create_account_with_existing_pesel(self):
+            pesel = "99799799701"
+            account_data = {
+                "name": "Unique", 
+                "surname": "Person", 
+                "pesel": pesel
+            }
+            requests.delete(f"{BASE_URL}/{pesel}")
+            
+            response = requests.post(BASE_URL, json=account_data)
+            assert response.status_code == 201
+            
+            response = requests.post(BASE_URL, json=account_data)
+            assert response.status_code == 409
+            assert response.json()["message"] == "Account with this pesel already exists"
+            
+            requests.delete(f"{BASE_URL}/{pesel}")
