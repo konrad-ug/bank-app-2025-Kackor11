@@ -96,3 +96,16 @@ class Test_Account_Registry_length:
         registry.add_account(account)
         registry.add_account(account)
         assert registry.return_registry_length() == 1
+        
+class Test_Adding_Duplicates:
+    def test_add_account_fail_duplicate_pesel(self):
+        registry = Account_Registry()
+        account1 = Customer_Account("Jan", "Kowalski", "98112233445", None)
+        account2 = Customer_Account("Jan", "Inny", "98112233445", None)
+        
+        result_first = registry.add_account(account1)
+        result_second = registry.add_account(account2)
+        
+        assert result_first == True
+        assert result_second == False
+        assert registry.return_registry_length() == 1

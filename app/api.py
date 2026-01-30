@@ -10,6 +10,10 @@ def create_account():
     data = request.get_json()
     print(f"Request data: {data}")
     
+    existing_account = registry.search_by_pesel(data["pesel"])
+    if existing_account:
+        return jsonify({"message": "Account with this pesel already exists"}), 409
+    
     new_account = Customer_Account(
         data["name"],
         data["surname"],
@@ -17,10 +21,12 @@ def create_account():
         data.get("promo_code", None)
     )
     
-    registry.add_account(new_account)
+    result = registry.add_account(new_account)
     
-    return jsonify({"message": "Account created", "pesel": new_account.pesel}), 201
-
+    if result:
+        return jsonify({"message": "Account created", "pesel": new_account.pesel}), 201
+    else:
+        return jsonify({"message": "Account could not be created"}), 400
 
 @app.route("/api/accounts", methods=['GET'])
 def get_all_accounts():
