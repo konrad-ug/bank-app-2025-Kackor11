@@ -10,4 +10,4 @@ class Test_Firm_Account:
     def test_firm_account_creation_with_invalid_nip(self):
         account = Firm_Account("Valve", "123456789")
         assert account.company_name == "Valve"
-        assert account.nip == "INVALID"
+        assert account.nip == "Invalid"
