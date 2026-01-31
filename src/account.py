@@ -1,6 +1,7 @@
 # mala sciaga:
 # python3 -m coverage run --source=src -m pytest
 # python3 -m coverage report
+from datetime import datetime
 
 class Account:
     def __init__(self):
@@ -38,3 +39,20 @@ class Account:
         self.transaction_history.append(amount_value)
         if fee_value != 0:
             self.transaction_history.append(fee_value)
+
+    def send_history_via_email(self, email_address):
+        from src.smtp.smtp import SMTPClient
+        from src.customer_account import Customer_Account
+        from src.firm_account import Firm_Account
+        
+        date_str = datetime.now().strftime("%Y-%m-%d")
+        subject = f"Account Transfer History {date_str}"
+        
+        if isinstance(self, Customer_Account):
+            msg_content = f"Personal account history: {self.transaction_history}"
+        elif isinstance(self, Firm_Account):
+             msg_content = f"Company account history: {self.transaction_history}"
+        else:
+             msg_content = f"Account history: {self.transaction_history}"
+
+        return SMTPClient.send(subject, msg_content, email_address)
