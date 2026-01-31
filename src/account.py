@@ -11,11 +11,15 @@ class Account:
         if isinstance(amount, float):
             self.balance += amount
             self.update_transfer_history(amount, 0)
-                       
+            return True
+        return False
+                        
     def transfer_out(self, amount):
         if isinstance(amount, float) and self.balance >= amount:
             self.balance -= amount
             self.update_transfer_history(-amount, 0)
+            return True
+        return False
             
     def express_transfer(self, amount):
         from src.customer_account import Customer_Account
@@ -24,10 +28,11 @@ class Account:
         else:
             fee = 5.00
         
-        new_balance = self.balance - amount - fee
-        self.balance = new_balance if (self.balance - amount) >= 0 else self.balance
-        
-        self.update_transfer_history(-amount, -fee)
+        if self.balance >= amount:
+            self.balance = self.balance - amount - fee
+            self.update_transfer_history(-amount, -fee)
+            return True
+        return False
     
     def update_transfer_history(self, amount_value, fee_value):
         self.transaction_history.append(amount_value)
