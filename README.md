@@ -15,5 +15,11 @@ python -m flask --app app/api.py run
 ## How to execute tests
 
 python3 -m pytest app/api_tests/account_crud.py
-python3 -m coverage run --source=src -m pytest 
+
+python3 -m coverage run --source=src -m pytest tests/unit
+python3 -m coverage report
+python3 -m coverage html
+
 python3 -m pytest tests/perf/test_performance.py
+
+python3 -m pytest tests/unit/test_mongo_repository.py

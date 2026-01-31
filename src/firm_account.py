@@ -43,3 +43,12 @@ class Firm_Account(Account):
             return False
         except requests.exceptions.RequestException:
             return False
+    
+    def to_dict(self):
+        return {
+            "type": "firm",
+            "company_name": self.company_name,
+            "nip": self.nip,
+            "balance": self.balance,
+            "transaction_history": self.transaction_history
+        }

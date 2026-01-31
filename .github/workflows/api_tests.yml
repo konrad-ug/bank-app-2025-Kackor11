@@ -5,6 +5,17 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
+    
+    services:
+      mongo:
+        image: mongo:latest
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd "mongosh --eval 'db.adminCommand(\"ping\")'"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
     - uses: actions/checkout@v3
@@ -20,6 +31,8 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         
     - name: Start flask
+      env:
+        MONGO_HOST: localhost
       run: |
         export FLASK_APP=app/api.py
         export FLASK_ENV=development
@@ -29,4 +42,4 @@ jobs:
         
     - name: Execute API tests
       run: |
-        python3 -m pytest app/api_tests/account_crud.py
+        python3 -m pytest app/api_tests/account_crud.py app/api_tests/test_save_load.py
