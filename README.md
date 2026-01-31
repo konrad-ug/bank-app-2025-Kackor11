@@ -16,3 +16,4 @@ python -m flask --app app/api.py run
 
 python3 -m pytest app/api_tests/account_crud.py
 python3 -m coverage run --source=src -m pytest 
+python3 -m pytest tests/perf/test_performance.py
