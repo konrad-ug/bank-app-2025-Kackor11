@@ -21,13 +21,13 @@ class Test_Account_Registry_contains:
     def test_not_every_account_is_customer_account(self):
         account_registry = Account_Registry()
         account_registry.accounts = [
-        Firm_Account("Valve", "1234567890"),
+        Firm_Account("Valve", "123456789"),
         Customer_Account("John", "Dawidson", "12365478910", None),
         Customer_Account("Joanna", "D'arc", "12345678019", None)
     ]
         result = all(isinstance(account, Customer_Account) for account in account_registry.accounts)
         assert result == False
-           
+            
 @pytest.fixture
 def account_registry():
     account_registry = Account_Registry()
@@ -44,15 +44,12 @@ class Test_Adding_To_Account_Registry:
         [Customer_Account("Person1_name", "Person1_surname", "12345678910", None), True],
         [Customer_Account("Person2_name", "Person2_surname", "12347890", None), False],
         [Customer_Account("Person3_name", "Person3_surname", "12345678911", None), False],
-        [Firm_Account("Valve", "1234567890"), False]
+        [Firm_Account("Valve", "123456789"), False]
     ])
     
     def test_account_we_add_is_customer_account(self, account_registry, person, expected_result):
         result = account_registry.add_account(person)
         assert result == expected_result
-
-from src.customer_account import Customer_Account
-from src.account_registry import Account_Registry
 
 class Test_Account_Registry_Return_All:
     def test_return_all_accounts_when_registry_is_empty(self):

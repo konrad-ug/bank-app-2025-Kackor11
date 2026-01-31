@@ -1,9 +1,11 @@
 import pytest
 from src.firm_account import Firm_Account
+from unittest.mock import patch
 
 @pytest.fixture
 def account():
-    return Firm_Account("Valve", "1234567890")
+    with patch.object(Firm_Account, 'verify_nip_in_gov', return_value=True):
+        return Firm_Account("Valve", "1234567890")
 
 class Test_Firm_For_Loan:
     
