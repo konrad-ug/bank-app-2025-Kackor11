@@ -1,4 +1,5 @@
 import pytest
+import requests
 from src.firm_account import Firm_Account
 from unittest.mock import patch
 
@@ -33,7 +34,7 @@ class Test_Firm_Account:
         assert account.company_name == "Valve"
         assert account.nip == "INVALID"
 
-    def test_firm_account_creation_api_returns_not_czynny(self, mocker):
+    def test_firm_account_creation_api_returns_not_active(self, mocker):
         mock_get = mocker.patch("src.firm_account.requests.get")
         
         mock_response = mocker.Mock()
@@ -49,3 +50,10 @@ class Test_Firm_Account:
 
         with pytest.raises(ValueError, match="Company not registered!!"):
             Firm_Account("Valve", "1234567890")
+
+    def test_firm_account_creation_api_connection_error(self, mocker):
+        mock_get = mocker.patch("src.firm_account.requests.get")
+        mock_get.side_effect = requests.exceptions.RequestException("Connection error")
+        with pytest.raises(ValueError, match="Company not registered!!"):
+            Firm_Account("Valve", "1234567890")
+            
