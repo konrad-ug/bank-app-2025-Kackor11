@@ -1,9 +1,11 @@
 import pytest
 from src.firm_account import Firm_Account
+from unittest.mock import patch
 
 @pytest.fixture
 def account():
-    return Firm_Account("Valve", "1234567890")
+    with patch.object(Firm_Account, 'verify_nip_in_gov', return_value=True):
+        return Firm_Account("Valve", "1234567890")
      
 class Test_Firm_express_Transfer:
     @pytest.mark.parametrize("start_balance, transfer_value, end_balance", [
@@ -36,4 +38,4 @@ class Test_Firm_Transfer_Out:
     def test_firm_out_transfer(self, account, start_balance, transfer_value, end_balance):
         account.balance = start_balance
         account.transfer_out(transfer_value)
-        assert account.balance == end_balance 
+        assert account.balance == end_balance
